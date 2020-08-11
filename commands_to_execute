@@ -1,4 +1,5 @@
 # Setup a new Ubuntu Droplet on DO and run this commands.
+# Ubuntu 18.04
 # The following commands were taken from multiple sources.
 # 1. Secure the server: https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04
 # replace *usuario* with your desired username
@@ -56,8 +57,14 @@ sudo chmod -R 755 /var/www/project_folder
 sudo cp /var/www/project_folder/wp-config-sample.php /var/www/project_folder/wp-config.php 
 sudo vim /var/www/project_folder/wp-config.php
 
-# Config Nginx
-sudo vim /etc/nginx/sites-available/project_folder
+# Config Nginx. Paste the contents from the file 'nginx_config_site' in the following file
+sudo vim /etc/nginx/sites-available/project_folder 
+# enable the site
+sudo ln -s /etc/nginx/sites-available/project_folder /etc/nginx/sites-enabled/
+
+# restart the services
+sudo systemctl restart nginx.service
+sudo systemctl restart php7.2-fpm.service
 
 # Install CertBot
 sudo apt install certbot python3-certbot-nginx
