@@ -2,11 +2,17 @@
 # Ubuntu 18.04
 # The following commands were taken from multiple sources.
 # 1. Secure the server: https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04
-# replace *usuario* with your desired username
+# replace usuario with your desired username
 
-adduser *usuario*
-usermod -aG sudo *usuario*
+adduser usuario
+usermod -aG sudo usuario
+# test if you can sudo with your user
+# then upload your ssh keys. in your local machine do
+ssh-copy-id -i ~/.ssh/mykey usuario@host
 
+# setup zsh instead of bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# then edit ~/.zshrc and set ZSH_THEME="agnoster"
 
 # 2. Setup Nginx, MariaDB and PHP: https://websiteforstudents.com/install-wordpress-on-ubuntu-18-04-lts-bata-with-nginx-mariadb-and-php-fpm/
 sudo apt update && sudo apt dist-upgrade && sudo apt autoremove
