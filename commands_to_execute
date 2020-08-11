@@ -31,7 +31,7 @@ memory_limit = 256M
 max_execution_time = 360
 upload_max_filesize = 100M
 date.timezone = America/Santiago
-# exit vim with :wq
+# exit vim with <ESC> :wq
 
 # Create Wordpress Database (you can log into mariadb with mysql cmd)
 sudo mysql -u root -p 
@@ -48,7 +48,7 @@ EXIT;
 
 # Install Wordpress
 # replace variables
-# project_folder
+# project_folder -> example.com
 cd /tmp && wget https://wordpress.org/latest.tar.gz
 tar -zxvf latest.tar.gz
 sudo mv wordpress /var/www/project_folder
@@ -68,3 +68,4 @@ sudo systemctl restart php7.2-fpm.service
 
 # Install CertBot
 sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d example.com -d www.example.com
