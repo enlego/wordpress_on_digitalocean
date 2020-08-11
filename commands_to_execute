@@ -1,0 +1,63 @@
+# Setup a new Ubuntu Droplet on DO and run this commands.
+# The following commands were taken from multiple sources.
+# 1. Secure the server: https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04
+# replace *usuario* with your desired username
+
+adduser *usuario*
+usermod -aG sudo *usuario*
+
+
+# 2. Setup Nginx, MariaDB and PHP: https://websiteforstudents.com/install-wordpress-on-ubuntu-18-04-lts-bata-with-nginx-mariadb-and-php-fpm/
+sudo apt update && sudo apt dist-upgrade && sudo apt autoremove
+sudo apt install nginx
+sudo apt install mariadb-server mariadb-client
+
+# Check that Nginx is allowed on UFW
+sudo ufw app list
+
+# Secure the database
+sudo mysql_secure_installation
+
+# Install PHP
+sudo apt install php-fpm php-common php-mbstring php-xmlrpc php-soap php-gd php-xml php-intl php-mysql php-cli php-ldap php-zip php-curl
+
+# Config PHP
+sudo vim /etc/php/7.2/fpm/php.ini
+
+## Inside that file change this settings
+post_max_size = 100M
+memory_limit = 256M
+max_execution_time = 360
+upload_max_filesize = 100M
+date.timezone = America/Santiago
+# exit vim with :wq
+
+# Create Wordpress Database (you can log into mariadb with mysql cmd)
+sudo mysql -u root -p 
+# Inside MariaDB.
+# you should replace the following variables
+# dbname
+# dbuser
+# dbpass
+CREATE DATABASE dbname
+CREATE USER 'dbuser'@'localhost' IDENTIFIED BY 'dbpass';
+GRANT ALL ON WP_database.* TO 'dbuser'@'localhost' IDENTIFIED BY 'dbpass' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EXIT;
+
+# Install Wordpress
+# replace variables
+# project_folder
+cd /tmp && wget https://wordpress.org/latest.tar.gz
+tar -zxvf latest.tar.gz
+sudo mv wordpress /var/www/project_folder
+sudo chown -R www-data:www-data /var/www/project_folder
+sudo chmod -R 755 /var/www/project_folder
+sudo cp /var/www/project_folder/wp-config-sample.php /var/www/project_folder/wp-config.php 
+sudo vim /var/www/project_folder/wp-config.php
+
+# Config Nginx
+sudo vim /etc/nginx/sites-available/project_folder
+
+# Install CertBot
+sudo apt install certbot python3-certbot-nginx
